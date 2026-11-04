@@ -1,0 +1,11 @@
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+
+# Zensical build output and cache
+site/
+.cache/
+
+# Local-only mise overrides
+mise.local.toml

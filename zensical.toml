@@ -1,7 +1,7 @@
 [project]
 site_name = "IS 456 Labs"
 site_description = "Lab exercises and walkthroughs for IS 456 · Agentic AI in Business"
-site_url = "https://is456.com/"
+site_url = "https://www.is456.com/"
 use_directory_urls = false
 nav = [
   { "Home" = "index.md" },

@@ -1,0 +1,19 @@
+[tools]
+python = "3.14"
+uv = "0.13.7"
+
+[env]
+# Override in mise.local.toml (gitignored), e.g. DEV_ADDR = "0.0.0.0:8000"
+DEV_ADDR = "localhost:8000"
+
+[tasks.install]
+description = "Install Python dependencies with uv"
+run = "uv sync"
+
+[tasks.dev]
+description = "Serve the site locally with live reload (dev.is456.com)"
+run = "uv run zensical serve -a $DEV_ADDR"
+
+[tasks.build]
+description = "Build the static site into site/"
+run = "uv run zensical build --clean"
