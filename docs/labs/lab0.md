@@ -32,7 +32,7 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
 
 *Before class, about 30 minutes.*
 
-### 0.0 Install mise (optional)
+### 0.0 Install mise (recommended)
 
 [mise](https://mise.jdx.dev/) installs and updates developer tools with the same command on every OS. The install steps below show the **mise** command first. If you'd rather not use mise, skip to [0.1](#01-install-uv) and pick your OS's tab instead. Either way, pick your OS's tab in steps that have no mise tab.
 
