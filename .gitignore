@@ -9,3 +9,6 @@ site/
 
 # Local-only mise overrides
 mise.local.toml
+
+# Playwright MCP scratch output
+.playwright-mcp/

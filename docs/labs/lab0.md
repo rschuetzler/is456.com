@@ -32,6 +32,38 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
 
 *Before class, about 30 minutes.*
 
+### 0.0 Install mise (optional)
+
+[mise](https://mise.jdx.dev/) installs and updates developer tools with the same command on every OS. If you use it, pick the **mise** tab in the steps below where there is one, and your own OS everywhere else. If you'd rather not, skip to [0.1](#01-install-uv).
+
+=== "macOS"
+
+    ```bash
+    curl -fsSL https://mise.run/zsh | sh
+    ```
+
+=== "Windows"
+
+    ```powershell
+    $env:MISE_INSTALL_SHIMS_PATH=1; irm https://mise.run/powershell | iex
+    ```
+
+=== "Linux"
+
+    ```bash
+    curl -fsSL https://mise.run/bash | sh
+    ```
+
+Close and reopen your terminal, then check with `mise --version`.
+
+??? info "Details: what mise is, and what that command set up"
+
+    Every tool in this course (`uv`, Ollama, and later ones) has its own installer, and each OS installs it differently. mise replaces all of that with one command: `mise use -g <tool>` installs the latest version of a tool, and `mise upgrade` updates everything you've installed. The `-g` means global: the tool works in every folder, not just this project.
+
+    The command does two things. It installs `mise` into `~/.local/bin`, and it makes your terminal find the tools mise installs. On macOS and Linux it adds a line to `~/.zshrc` or `~/.bashrc`. On Windows it adds mise's `shims` folder to your `Path`.
+
+    The macOS command assumes zsh and the Linux one assumes bash, the default shell on each. If you use a different shell, see [mise's install guide](https://mise.jdx.dev/installing-mise.html).
+
 ### 0.1 Install uv
 
 === "macOS"
@@ -41,12 +73,13 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
     ```
 
     ??? info "No Homebrew?"
-
-        Use the standalone installer instead. It puts `uv` in `~/.local/bin` and adds that folder to your `PATH`.
+        
+        I recommend Homebrew ([https://brew.sh/](https://brew.sh/)) for installing Mac developer tools. But if you don't trust me (or it), you can use the standalone installer instead. It puts `uv` in `~/.local/bin` and adds that folder to your `PATH`.
 
         ```bash
         curl -LsSf https://astral.sh/uv/install.sh | sh
         ```
+
 
 === "Windows"
 
@@ -58,6 +91,12 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
 
     ```bash
     curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+
+=== "mise"
+
+    ```bash
+    mise use -g uv
     ```
 
 Close and reopen your terminal, then check with `uv --version`.
@@ -83,6 +122,15 @@ Close and reopen your terminal, then check with `uv --version`.
     ```
 
     It asks for your password, then sets Ollama up as a background service that starts on its own. If it says it needs `zstd`, install that first (`sudo apt install zstd` on Ubuntu or Debian, `sudo dnf install zstd` on Fedora) and run it again.
+
+=== "mise"
+
+    ```bash
+    mise use -g ollama
+    ollama serve    # leave this running in its own terminal window
+    ```
+
+    mise installs the `ollama` command-line program, but not the desktop app or background service, so nothing starts Ollama for you. Whenever you work on a lab, start `ollama serve` in its own terminal window and leave it open. Run everything else in a second window. If you'd rather Ollama start by itself, use your OS's tab instead.
 
 Then download the model and try it:
 
@@ -449,13 +497,17 @@ git push
 
 ## Troubleshooting
 
+??? failure "`mise: command not found`, or `uv`/`ollama` not found after `mise use`"
+
+    Close and reopen the terminal. On Windows, sign out and back in. If it still fails, run `mise doctor` and look for warnings about activation or shims.
+
 ??? failure "`uv: command not found`"
 
     Close and reopen the terminal. On Windows, sign out and back in. On Linux, run `source $HOME/.local/bin/env`, or check that `~/.local/bin` is on your `PATH`.
 
 ??? failure "`FAIL Ollama is running`"
 
-    Start the Ollama app. Or run `ollama serve` in a second terminal and leave it open. On Linux, start the service with `sudo systemctl start ollama` and check it with `systemctl status ollama`.
+    Start the Ollama app. Or run `ollama serve` in a second terminal and leave it open; if you installed Ollama with mise, this is the only way to start it. On Linux, start the service with `sudo systemctl start ollama` and check it with `systemctl status ollama`.
 
 ??? failure "`FAIL Model … is downloaded`"
 
