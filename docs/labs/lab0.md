@@ -40,6 +40,14 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
     brew install uv
     ```
 
+    ??? info "No Homebrew?"
+
+        Use the standalone installer instead. It puts `uv` in `~/.local/bin` and adds that folder to your `PATH`.
+
+        ```bash
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        ```
+
 === "Windows"
 
     ```powershell
@@ -54,11 +62,9 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
 
 Close and reopen your terminal, then check with `uv --version`.
 
-??? info "What is uv, and no Homebrew?"
+??? info "What is uv?"
 
     `uv` is a fast Python project manager. It installs the right version of Python for you, creates a virtual environment, and installs packages, all from one tool.
-
-    If you don't use Homebrew on macOS, the standalone installer from the Linux tab works on macOS too. It installs `uv` into `~/.local/bin` and adds that folder to your `PATH`.
 
 ### 0.2 Install Ollama and download a model
 
