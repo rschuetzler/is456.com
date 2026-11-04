@@ -34,7 +34,7 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
 
 ### 0.0 Install mise (optional)
 
-[mise](https://mise.jdx.dev/) installs and updates developer tools with the same command on every OS. If you use it, pick the **mise** tab in the steps below where there is one, and your own OS everywhere else. If you'd rather not, skip to [0.1](#01-install-uv).
+[mise](https://mise.jdx.dev/) installs and updates developer tools with the same command on every OS. The install steps below show the **mise** command first. If you'd rather not use mise, skip to [0.1](#01-install-uv) and pick your OS's tab instead. Either way, pick your OS's tab in steps that have no mise tab.
 
 === "macOS"
 
@@ -66,6 +66,12 @@ Close and reopen your terminal, then check with `mise --version`.
 
 ### 0.1 Install uv
 
+=== "mise"
+
+    ```bash
+    mise use -g uv
+    ```
+
 === "macOS"
 
     ```bash
@@ -93,12 +99,6 @@ Close and reopen your terminal, then check with `mise --version`.
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
-=== "mise"
-
-    ```bash
-    mise use -g uv
-    ```
-
 Close and reopen your terminal, then check with `uv --version`.
 
 ??? info "What is uv?"
@@ -106,6 +106,15 @@ Close and reopen your terminal, then check with `uv --version`.
     `uv` is a fast Python project manager. It installs the right version of Python for you, creates a virtual environment, and installs packages, all from one tool.
 
 ### 0.2 Install Ollama and download a model
+
+=== "mise"
+
+    ```bash
+    mise use -g ollama
+    ollama serve    # leave this running in its own terminal window
+    ```
+
+    mise installs the `ollama` command-line program, but not the desktop app or background service, so nothing starts Ollama for you. Whenever you work on a lab, start `ollama serve` in its own terminal window and leave it open. Run everything else in a second window. If you'd rather Ollama start by itself, use your OS's tab instead.
 
 === "macOS"
 
@@ -122,15 +131,6 @@ Close and reopen your terminal, then check with `uv --version`.
     ```
 
     It asks for your password, then sets Ollama up as a background service that starts on its own. If it says it needs `zstd`, install that first (`sudo apt install zstd` on Ubuntu or Debian, `sudo dnf install zstd` on Fedora) and run it again.
-
-=== "mise"
-
-    ```bash
-    mise use -g ollama
-    ollama serve    # leave this running in its own terminal window
-    ```
-
-    mise installs the `ollama` command-line program, but not the desktop app or background service, so nothing starts Ollama for you. Whenever you work on a lab, start `ollama serve` in its own terminal window and leave it open. Run everything else in a second window. If you'd rather Ollama start by itself, use your OS's tab instead.
 
 Then download the model and try it:
 
