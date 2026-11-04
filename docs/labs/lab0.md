@@ -40,10 +40,16 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
     brew install uv
     ```
 
-=== "Windows (PowerShell)"
+=== "Windows"
 
     ```powershell
     powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+    ```
+
+=== "Linux"
+
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
 Close and reopen your terminal, then check with `uv --version`.
@@ -52,15 +58,27 @@ Close and reopen your terminal, then check with `uv --version`.
 
     `uv` is a fast Python project manager. It installs the right version of Python for you, creates a virtual environment, and installs packages, all from one tool.
 
-    If you don't use Homebrew on macOS, the standalone installer works too:
-
-    ```bash
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    ```
+    If you don't use Homebrew on macOS, the standalone installer from the Linux tab works on macOS too. It installs `uv` into `~/.local/bin` and adds that folder to your `PATH`.
 
 ### 0.2 Install Ollama and download a model
 
-Install Ollama from **<https://ollama.com/download>**, start it, then:
+=== "macOS"
+
+    Install Ollama from **<https://ollama.com/download>** and start the app.
+
+=== "Windows"
+
+    Install Ollama from **<https://ollama.com/download>** and start the app.
+
+=== "Linux"
+
+    ```bash
+    curl -fsSL https://ollama.com/install.sh | sh
+    ```
+
+    It asks for your password, then sets Ollama up as a background service that starts on its own. If it says it needs `zstd`, install that first (`sudo apt install zstd` on Ubuntu or Debian, `sudo dnf install zstd` on Fedora) and run it again.
+
+Then download the model and try it:
 
 ```bash
 ollama pull qwen3:1.7b
@@ -69,7 +87,7 @@ ollama run qwen3:1.7b   # ask it anything, then type /bye
 
 ??? info "Details: what Ollama is and why such a small model"
 
-    Ollama runs language models locally. Nothing you send it leaves your laptop, and it costs nothing per call. On macOS and Windows it runs in the menu bar or system tray once you start the app.
+    Ollama runs language models locally. Nothing you send it leaves your laptop, and it costs nothing per call. On macOS and Windows it runs in the menu bar or system tray once you start the app. On Linux it runs as a `systemd` service named `ollama`, with no window or icon.
 
     `qwen3:1.7b` is a 1.7-billion-parameter model, about 1.4 GB on disk and under 3 GB of memory while it runs. For comparison, the models behind commercial chat assistants are estimated at hundreds of billions to trillions of parameters. Expect it to be noticeably less capable. That's useful: you'll see failures today that a bigger model would hide.
 
@@ -101,7 +119,7 @@ uv sync # (1)!
     uv run step2_agent_loop.py   # this project's Python and packages
     ```
 
-    You never need to "activate" anything. If you want to, it's `source .venv/bin/activate` on macOS or `.venv\Scripts\activate` on Windows. Later in the semester you'll add packages with `uv add <package>`, which updates `pyproject.toml` and `uv.lock` together.
+    You never need to "activate" anything. If you want to, it's `source .venv/bin/activate` on macOS or Linux, or `.venv\Scripts\activate` on Windows. Later in the semester you'll add packages with `uv add <package>`, which updates `pyproject.toml` and `uv.lock` together.
 
 ### 0.4 Set up your `.env` file
 
@@ -120,6 +138,13 @@ uv sync # (1)!
 
     ```powershell
     copy .env.example .env
+    git check-ignore -v .env    # prints the rule that hides it
+    ```
+
+=== "Linux"
+
+    ```bash
+    cp .env.example .env
     git check-ignore -v .env    # prints the rule that hides it
     ```
 
@@ -178,6 +203,13 @@ HF_TOKENIZER=Qwen/Qwen3-1.7B
         ```powershell
         $env:MODEL="some-other-model"; uv run python -c "import config; print(config.MODEL)"
         Remove-Item Env:MODEL; uv run python -c "import config; print(config.MODEL)"
+        ```
+
+    === "Linux"
+
+        ```bash
+        MODEL=some-other-model uv run python -c "import config; print(config.MODEL)"
+        uv run python -c "import config; print(config.MODEL)"
         ```
 
     The first command prints `some-other-model`; the second prints `qwen3:1.7b` from your `.env`.
@@ -375,6 +407,12 @@ uv run python -c "from tools import lookup_policy; print(lookup_policy.invoke({'
         $env:MODEL="qwen3:0.6b"; uv run step2_agent_loop.py "Which invoices are for more than their purchase order amount?"
         ```
 
+    === "Linux"
+
+        ```bash
+        MODEL=qwen3:0.6b uv run step2_agent_loop.py "Which invoices are for more than their purchase order amount?"
+        ```
+
     If your laptop has 8 GB or more of memory to spare, try `qwen3:4b` too. Compare steps, errors and answers.
 
 ??? example "6. Shrink its memory"
@@ -407,11 +445,11 @@ git push
 
 ??? failure "`uv: command not found`"
 
-    Close and reopen the terminal. On Windows, sign out and back in.
+    Close and reopen the terminal. On Windows, sign out and back in. On Linux, run `source $HOME/.local/bin/env`, or check that `~/.local/bin` is on your `PATH`.
 
 ??? failure "`FAIL Ollama is running`"
 
-    Start the Ollama app. Or run `ollama serve` in a second terminal and leave it open.
+    Start the Ollama app. Or run `ollama serve` in a second terminal and leave it open. On Linux, start the service with `sudo systemctl start ollama` and check it with `systemctl status ollama`.
 
 ??? failure "`FAIL Model … is downloaded`"
 
