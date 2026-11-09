@@ -20,7 +20,7 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
     |---|---|---|
     | **Before class** | [Part 0 — Set up](#part-0-set-up). It downloads about 1.5 GB, and 70 people doing that on campus Wi-Fi at once won't work. | 30 min |
     | **In class** | Parts [1](#part-1-what-the-model-actually-sees) to [5](#part-5-experiments) | 75 min |
-    | **Submit** | Push `observations.md` and your updated `tools.py` ([Part 6](#part-6-commit-and-push)) | 2 min |
+    | **Submit** | Push `observations.md` and your updated `tools.py` ([Part 6](#part-6-commit-and-push)). Your last push before the deadline counts. | 2 min |
 
 !!! tip "How to use this page"
 
@@ -149,13 +149,23 @@ ollama run qwen3:1.7b   # ask it anything, then type /bye
 
 ### 0.3 Get the starter code and build the environment
 
+1. Sign in to [ClassMoji](https://classmoji.io) with your GitHub account and verify your BYU email.
+2. Accept the invitation to the **BYU-IS-456** GitHub organization. GitHub emails it to you, or open <https://github.com/orgs/BYU-IS-456/invitation>.
+3. Clone your copy of the starter code, replacing `YOUR-GITHUB-USERNAME`, and build the environment:
+
 ```bash
-git clone <your GitHub Classroom repo URL>
-cd <the repo folder>
+git clone https://github.com/BYU-IS-456/lab-0-setup-YOUR-GITHUB-USERNAME.git
+cd lab-0-setup-YOUR-GITHUB-USERNAME
 uv sync # (1)!
 ```
 
 1.  Reads `.python-version`, `pyproject.toml` and `uv.lock`, then installs Python 3.12 and every package into `.venv/`. Open the fold below for what each file does.
+
+??? info "Details: ClassMoji and your repo"
+
+    ClassMoji hands out starter code for every lab. When a lab opens, it copies the starter code into a new GitHub repository for each student, named after the lab and your GitHub username. That copy is yours: you commit and push to it, and pushing is how you submit.
+
+    You'll only see your repo after you've accepted the organization invitation. If you've accepted it and `git clone` still says the repository isn't found, check the spelling of your username, then ask for help.
 
 ??? info "Details: what `uv sync` just did, and how to run code"
 
@@ -322,7 +332,7 @@ uv run step1_chat.py --temperature 0   # randomness turned down
 
 ### 2a. Read before you run
 
-Open `step2_agent_loop.py` and `tools.py`. The entire agent is the `run_agent()` function, about 40 lines. **Don't run anything yet.**
+Open `step2_agent_loop.py` and `tools.py`. The entire agent is the `run_agent()` function, about 30 lines. **Don't run anything yet.**
 
 !!! question "Answer in `observations.md`"
 
@@ -492,6 +502,8 @@ git push
 !!! warning
 
     If `.env` ever shows up in `git status`, stop. Don't commit; ask for help.
+
+Pushing is submitting: your last push before the deadline counts. Push as often as you like.
 
 ---
 
