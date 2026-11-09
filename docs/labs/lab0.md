@@ -159,7 +159,7 @@ cd lab-0-setup-YOUR-GITHUB-USERNAME
 uv sync # (1)!
 ```
 
-1.  Reads `.python-version`, `pyproject.toml` and `uv.lock`, then installs Python 3.12 and every package into `.venv/`. Open the fold below for what each file does.
+1.  Reads `.python-version`, `pyproject.toml` and `uv.lock`, then installs Python 3.15 and every package into `.venv/`. Open the fold below for what each file does.
 
 ??? info "Details: ClassMoji and your repo"
 
@@ -173,7 +173,7 @@ uv sync # (1)!
 
     | File | What it says | What `uv sync` did |
     |---|---|---|
-    | `.python-version` | this project uses Python 3.12 | downloaded Python 3.12 if you didn't have it |
+    | `.python-version` | this project uses Python 3.15 | downloaded Python 3.15 if you didn't have it |
     | `pyproject.toml` | the packages this project needs (`langchain`, `langchain-ollama`, …) | created a virtual environment in `.venv/` and installed them there |
     | `uv.lock` | the exact version of every package, including dependencies of dependencies | installed exactly those versions, so your environment matches everyone else's |
 
