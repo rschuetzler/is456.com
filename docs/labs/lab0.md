@@ -34,7 +34,7 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
 
 ### 0.0 Install mise (recommended)
 
-[mise](https://mise.jdx.dev/) installs and updates developer tools with the same command on every OS. The install steps below show the **mise** command first. If you'd rather not use mise, skip to [0.1](#01-install-uv) and pick your OS's tab instead. Either way, pick your OS's tab in steps that have no mise tab.
+[mise](https://mise.jdx.dev/) installs and updates developer tools with the same command on every OS. The install steps below show the **mise** command first. If you'd rather not use mise, skip to [0.1](#01-install-uv) and pick your OS's tab instead. Either way, pick your OS's tab in steps if there is no mise tab. In future labs where dev tools are required, I'll provide mise instructions along with the OS-specific instructions.
 
 === "macOS"
 
@@ -58,7 +58,7 @@ Close and reopen your terminal, then check with `mise --version`.
 
 ??? info "Details: what mise is, and what that command set up"
 
-    Every tool in this course (`uv`, Ollama, and later ones) has its own installer, and each OS installs it differently. mise replaces all of that with one command: `mise use -g <tool>` installs the latest version of a tool, and `mise upgrade` updates everything you've installed. The `-g` means global: the tool works in every folder, not just this project.
+    Every tool in this course (`uv`, Ollama, and later ones) has its own installer, and each OS installs it differently. mise replaces all of that with one command: `mise use -g <tool>` installs the latest version of a tool, and `mise upgrade` updates everything you've installed. The `-g` means global: the tool works in every folder, not just this project. Without the `-g`, you can specific different tools (like different Python versions) for each folder, keeping your dependencies separate.
 
     The command does two things. It installs `mise` into `~/.local/bin`, and it makes your terminal find the tools mise installs. On macOS and Linux it adds a line to `~/.zshrc` or `~/.bashrc`. On Windows it adds mise's `shims` folder to your `Path`.
 
@@ -80,7 +80,7 @@ Close and reopen your terminal, then check with `mise --version`.
 
     ??? info "No Homebrew?"
         
-        I recommend Homebrew ([https://brew.sh/](https://brew.sh/)) for installing Mac developer tools. But if you don't trust me (or it), you can use the standalone installer instead. It puts `uv` in `~/.local/bin` and adds that folder to your `PATH`.
+        I recommend Homebrew ([https://brew.sh/](https://brew.sh/)) for installing Mac tools. But if you don't trust me (or it), you can use the standalone installer instead. It puts `uv` in `~/.local/bin` and adds that folder to your `PATH`.
 
         ```bash
         curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -108,6 +108,10 @@ Close and reopen your terminal, then check with `uv --version`.
 ### 0.2 Install Ollama and download a model
 
 === "mise"
+
+    !!! tip "Ollama with mise? Maybe."
+
+        It's totally okay to install `ollama` with mise. It comes with one important limitation, though: you have to run the server yourself. Ollama needs a background server to download and run models. If you install with mise, you have to open a terminal and run that background server every time you want to use ollama. If you install with the OS-specific info, it'll run a background service for you. The choice is yours.
 
     ```bash
     mise use -g ollama
@@ -187,9 +191,10 @@ uv sync # (1)!
 
 ### 0.4 Set up your `.env` file
 
-1. Create a **Read** token at <https://huggingface.co/settings/tokens> named `is456`.
-2. Copy the template and paste your token after `HF_TOKEN=`.
-3. Confirm git ignores `.env`.
+1. Create an account at HuggingFace (<https://huggingface.co/join>)
+2. Create a **Read** token at <https://huggingface.co/settings/tokens> named `is456`.
+3. Copy the template and paste your token after `HF_TOKEN=`.
+4. Confirm git ignores `.env`.
 
 === "macOS"
 
@@ -223,7 +228,7 @@ HF_TOKENIZER=Qwen/Qwen3-1.7B
 1.  Context window in tokens. Bigger remembers more of a long conversation but uses more memory. 8192 keeps `qwen3:1.7b` under about 3 GB.
 2.  No spaces and no quotes. Hugging Face shows the token only once; if you lose it, make a new one.
 
-!!! danger "Rules for secrets, this semester and after"
+!!! danger "Rules for secrets: this semester and forever"
 
     Never put a secret in code, a commit, a screenshot, Slack, or a prompt to an AI assistant (including a coding agent that can read your files). If you think one has leaked, don't just delete it: **revoke it** at the provider and make a new one.
 
@@ -238,13 +243,13 @@ HF_TOKENIZER=Qwen/Qwen3-1.7B
 
     You could set them in your terminal before every run, but that gets tedious, so projects keep them in a file named **`.env`** and load it at startup (that's the `load_dotenv()` line in `config.py`).
 
-    Notice the pair: **`.env.example`** is committed and tells teammates which variables exist. **`.env`** holds your real values and is never committed. You'll use this pattern in every project from now on.
+    Notice two files: **`.env.example`** is committed and tells teammates which variables exist. **`.env`** holds your real values and is never committed. You'll use this pattern in every project from now on.
 
 ??? info "Details: getting the Hugging Face token, step by step"
 
     Hugging Face is where most open models, including ours, are published. You'll use it in Part 1 to download your model's tokenizer.
 
-    1. Create a free account at <https://huggingface.co> (or sign in).
+    1. Create a free account at <https://huggingface.co/join> (or sign in).
     2. Go to **Settings → Access Tokens** and click **Create new token**.
     3. Choose token type **Read**, name it `is456`, and create it.
     4. Copy the token (it starts with `hf_`).
@@ -292,6 +297,8 @@ Fix the first `FAIL` it reports and run it again until every line passes. The fi
 
 *About 10 minutes.*
 
+In this section, you'll run the qwen3 model's tokenizer. An LLM doesn't read words like we do. It uses a tokenizer to break words down into tokens. Those tokens are the basic measurement that's used for pretty much everything in an LLM. Speed is measured in tokens/second. Cost is measured in dollars or cents per token. Starting to see things in tokens will help you better understand some limitations of LLMs.
+
 ### 1a. Tokens
 
 ```bash
@@ -305,7 +312,7 @@ uv run step1_tokens.py "your text here"
 
 !!! question "Answer in `observations.md`"
 
-    1. How is `INV-1045 for $20,440.00` split up? What does that suggest about asking a language model to do arithmetic on invoice amounts?
+    1. How is `INV-1045 for $20,440.00` split up? What does that suggest about asking a language model to do math?
     2. `strawberry` is one token. Why might a model struggle to count the r's in it?
     3. The script ends with the "fixed cost" of every agent step. What is it, and where does it come from?
 
@@ -313,12 +320,13 @@ uv run step1_tokens.py "your text here"
 
 ```bash
 uv run step1_chat.py                   # the same prompt, three times
-uv run step1_chat.py --temperature 0   # randomness turned down
+uv run step1_chat.py --temperature 0   # randomness turned all the way down
 ```
 
 !!! question "Answer in `observations.md`"
 
     4. Did the three answers agree? Did `--temperature 0` make them identical? What does that mean for a business process that needs the same answer every time?
+    5. Experiment with other temperature values (between 0 and 1, e.g., 0.7). What do you notice?
 
 !!! note
 
