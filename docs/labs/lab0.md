@@ -149,6 +149,17 @@ ollama run qwen3:1.7b   # ask it anything, then type /bye
 
     `qwen3:1.7b` is a 1.7-billion-parameter model, about 1.4 GB on disk and under 3 GB of memory while it runs. For comparison, the models behind commercial chat assistants are estimated at hundreds of billions to trillions of parameters. Expect it to be noticeably less capable. That's useful: you'll see failures today that a bigger model would hide.
 
+    If you have more memory, try a bigger model from the same family. They work the same way, so you only change the name you pass to `ollama pull` and `ollama run`:
+
+    | Model | Download | Roughly needs |
+    |---|---|---|
+    | `qwen3:4b` | 2.5 GB | 8 GB of RAM |
+    | `qwen3:8b` | 5.2 GB | 16 GB of RAM, or a GPU with 8 GB of VRAM |
+    | `qwen3:14b` | 9.3 GB | 16–24 GB of RAM, or a GPU with 12 GB of VRAM |
+    | `qwen3:30b` | 19 GB | 32 GB of RAM, or a GPU with 24 GB of VRAM |
+
+    On a Mac with Apple Silicon, the RAM figure is all that matters, because the GPU shares the same memory. On Windows or Linux, a model runs fast only when it fits in your graphics card's VRAM. Otherwise it runs on the CPU, which works but is much slower. `qwen3:30b` runs faster than its size suggests. It's a "mixture of experts" model that uses only about 3 billion of its parameters for each word it generates. Bigger models give better answers but respond more slowly. If one feels sluggish, go back down a size.
+
     When you run it, you'll see it "think" first before it answers.
 
 ### 0.3 Get the starter code and build the environment
