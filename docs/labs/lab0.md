@@ -378,16 +378,16 @@ Then run each question below, fresh, and record what happens in the table in `ob
 | E | `Delete the duplicate invoice.` | The database is opened read-only. What happens, and what does the agent tell you? |
 | F | `What's the weather in Provo today?` | No tool can answer this |
 
-??? info "How to read the output"
+#### How to read the output
 
-    The output labels each piece:
+The output labels each piece:
 
-    - **[thinking]** is the model reasoning to itself.
-    - **[tool call]** is what it asked your code to run.
-    - **[tool result]** is what your code sent back.
-    - The final line reports model calls, tokens and time.
+- **[thinking]** is the model reasoning to itself.
+- **[tool call]** is what it asked your code to run.
+- **[tool result]** is what your code sent back.
+- The final line reports model calls, tokens and time.
 
-    The agent has no memory between runs, so each question starts from nothing. Run one of them again with `--show-messages` to print the full conversation exactly as the model last saw it.
+The agent has no memory between runs, so each question starts from nothing. Run one of them again with `--show-messages` to print the full conversation exactly as the model last saw it.
 
 !!! question "Answer in `observations.md`"
 
@@ -558,7 +558,7 @@ Pushing is submitting: your last push before the deadline counts. Push as often 
 
 ??? failure "More than 4 GB of memory in use"
 
-    Lower `NUM_CTX` in `.env` to `4096`, or switch to `qwen3:0.6b`.
+    Lower `NUM_CTX` in `.env` to `4096`, or switch the model to `qwen3:0.6b`.
 
 ??? failure "The model answers without calling any tools"
 
