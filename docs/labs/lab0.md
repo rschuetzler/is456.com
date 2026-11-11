@@ -355,11 +355,11 @@ Open `step2_agent_loop.py` and `tools.py`. The entire agent is the `run_agent()`
 
 !!! question "Answer in `observations.md`"
 
-    5. Find the three numbered comments in the loop. In one sentence each, what happens at 1, 2 and 3?
-    6. Who runs the SQL query: the model or your Python code? What exactly does the model produce instead?
-    7. How does the loop decide it's finished? Name both ways it can stop.
-    8. What is in `messages` by the third step? Why does the whole list get sent to the model every time?
-    9. In `tools.py`, where does the model get its description of each tool? What would happen if a docstring were wrong?
+    6. Find the three numbered comments in the loop. In one sentence each, what happens at 1, 2 and 3?
+    7. Who runs the SQL query: the model or your Python code? What exactly does the model produce instead?
+    8. How does the loop decide it's finished? Name both ways it can stop.
+    9. What is in `messages` by the third step? Why does the whole list get sent to the model every time?
+    10. In `tools.py`, where does the model get its description of each tool? What would happen if a docstring were wrong?
 
 ### 2b. Run it and watch
 
@@ -391,9 +391,9 @@ Then run each question below, fresh, and record what happens in the table in `ob
 
 !!! question "Answer in `observations.md`"
 
-    10. Pick one question where the agent got the wrong answer or wrote bad SQL. What went wrong, and did it notice?
-    11. Compare the input tokens from A and B. Why does a longer task cost so much more than the number of steps alone suggests? (Hint: question 8.)
-    12. In D, the agent got an error back from a tool. Did it say so honestly, work around it, or make something up?
+    11. Pick one question where the agent got the wrong answer or wrote bad SQL. What went wrong, and did it notice?
+    12. Compare the input tokens from A and B. Why does a longer task cost so much more than the number of steps alone suggests? (Hint: question 9.)
+    13. In D, the agent got an error back from a tool. Did it say so honestly, work around it, or make something up?
 
 ---
 
@@ -409,8 +409,8 @@ uv run step3_langchain_agent.py "Which invoices are for more than their purchase
 
 !!! question "Answer in `observations.md`"
 
-    13. Where did the loop go? Point to the line that replaced your 1-2-3 loop.
-    14. Run question D or E again. LangChain formats tool errors differently from your loop. Find one difference. What other decisions might a framework be making for you that you can't see?
+    14. Where did the loop go? Point to the line that replaced your 1-2-3 loop.
+    15. Run question D or E again. LangChain formats tool errors differently from your loop. Find one difference. What other decisions might a framework be making for you that you can't see?
 
 ---
 
@@ -447,8 +447,8 @@ uv run python -c "from tools import lookup_policy; print(lookup_policy.invoke({'
 
 !!! question "Answer in `observations.md`"
 
-    15. Paste the trace summary (model calls, tool calls, tokens) for D before and after. What changed in the agent's behavior, apart from it now having the answer?
-    16. Call your tool with the topic `duplicate invoices` and count how many sections come back. Why so many? What are the limits of matching on keywords? (We fix this properly in week 4.)
+    16. Paste the trace summary (model calls, tool calls, tokens) for D before and after. What changed in the agent's behavior, apart from it now having the answer?
+    17. Call your tool with the topic `duplicate invoices` and count how many sections come back. Why so many? What are the limits of matching on keywords? (We fix this properly in week 4.)
 
 ---
 
@@ -504,8 +504,8 @@ uv run python -c "from tools import lookup_policy; print(lookup_policy.invoke({'
 
 !!! question "Answer in `observations.md`"
 
-    17. For each experiment you ran: what you changed, what you expected, what happened.
-    18. **Last question.** In two or three sentences: after today, what is an agent? Use the words *model*, *tool* and *loop*.
+    18. For each experiment you ran: what you changed, what you expected, what happened.
+    19. **Last question.** In two or three sentences: after today, what is an agent? Use the words *model*, *tool* and *loop*.
 
 ---
 
