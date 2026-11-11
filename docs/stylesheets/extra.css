@@ -1,0 +1,11 @@
+/* Dark mode: admonitions tint their background, which lands at almost the
+   same brightness as --md-code-bg-color, so code inside them disappears.
+   Lift code a step lighter there and give blocks a faint edge. */
+[data-md-color-scheme="slate"] .md-typeset :is(.admonition, details) {
+  --md-code-bg-color: hsla(225deg, 18%, 19%, 1);
+}
+
+[data-md-color-scheme="slate"] .md-typeset :is(.admonition, details) .highlight {
+  box-shadow: 0 0 0 1px var(--md-default-fg-color--lightest);
+  border-radius: 0.1rem;
+}
