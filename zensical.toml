@@ -6,7 +6,7 @@ extra_css = ["stylesheets/extra.css"]
 use_directory_urls = false
 nav = [
   { "Home" = "index.md" },
-  { "Week 1" = [
+  { "Weeks 1–2" = [
     { "Lab 0 — Your first agent" = "labs/lab0.md" },
   ] },
 ]

@@ -18,8 +18,9 @@ The agent works for the accounts payable team at **Summit Ridge Outfitters**, th
 
     | When | What | Time |
     |---|---|---|
-    | **Before class** | [Part 0 — Set up](#part-0-set-up). It downloads about 1.5 GB, and 70 people doing that on campus Wi-Fi at once won't work. | 30 min |
-    | **In class** | Parts [1](#part-1-what-the-model-actually-sees) to [5](#part-5-experiments) | 75 min |
+    | **Before the first class** | [Part 0 — Set up](#part-0-set-up). It downloads about 1.5 GB, and 70 people doing that on campus Wi-Fi at once won't work. | 30 min |
+    | **Day 1 in class** (Thu Jan 7) | [Part 1](#part-1-what-the-model-actually-sees), then push `observations.md` | 30 min |
+    | **Day 2 in class** (Thu Jan 14) | Parts [2](#part-2-read-the-agent-loop-then-run-it) to [5](#part-5-experiments) | 75 min |
     | **Submit** | Push `observations.md` and your updated `tools.py` ([Part 6](#part-6-commit-and-push)). Your last push before the deadline counts. | 2 min |
 
 !!! tip "How to use this page"
@@ -343,6 +344,16 @@ uv run step1_chat.py --temperature 0   # randomness turned all the way down
 
     The model answered a question about a specific invoice with no access to the invoice, the PO or the policy. Keep that in mind for Part 2.
 
+!!! success "End of day 1"
+
+    Save your answers to questions 1–5 and push them. We pick up at Part 2 next Thursday.
+
+    ```bash
+    git add observations.md
+    git commit -m "Lab 0 day 1"
+    git push
+    ```
+
 ---
 
 ## Part 2 — Read the agent loop, then run it
@@ -448,7 +459,7 @@ uv run python -c "from tools import lookup_policy; print(lookup_policy.invoke({'
 !!! question "Answer in `observations.md`"
 
     16. Paste the trace summary (model calls, tool calls, tokens) for D before and after. What changed in the agent's behavior, apart from it now having the answer?
-    17. Call your tool with the topic `duplicate invoices` and count how many sections come back. Why so many? What are the limits of matching on keywords? (We fix this properly in week 4.)
+    17. Call your tool with the topic `duplicate invoices` and count how many sections come back. Why so many? What are the limits of matching on keywords? (We fix this properly in Lab 7.)
 
 ---
 

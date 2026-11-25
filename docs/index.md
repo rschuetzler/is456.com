@@ -12,7 +12,7 @@ Each lab gives you the short version of every step first. If you know what to do
 
 <div class="grid cards" markdown>
 
--   :material-robot-outline:{ .lg .middle } **Week 1 · Lab 0 — Your first agent**
+-   :material-robot-outline:{ .lg .middle } **Weeks 1–2 · Lab 0 — Your first agent**
 
     ---
 
@@ -20,10 +20,10 @@ Each lab gives you the short version of every step first. If you know what to do
 
     [:octicons-arrow-right-24: Start Lab 0](labs/lab0.md)
 
--   :material-lock-outline:{ .lg .middle } **Week 3 · Lab 2**
+-   :material-lock-outline:{ .lg .middle } **Week 3 · Lab 1 — Score, don't vibe**
 
     ---
 
-    Extraction and classification over supplier invoices. *Coming soon.*
+    Write a test set for invoice triage first, then improve a prompt against it and report the score. *Coming soon.*
 
 </div>
