@@ -6,7 +6,7 @@ icon: material/clipboard-check-outline
 
 !!! warning "Draft"
 
-    This lab is still being written. The starter code isn't published yet, and steps may change.
+    This lab is still being reviewed. The starter repo isn't on GitHub yet, and steps may change.
 
 In Lab 0 you judged the agent by reading its answers and deciding whether they looked right. That works for six questions. It doesn't work when a prompt has to handle thousands of invoices, or when you change the prompt and need to know whether you made it better or worse. By the end of this lab you will have:
 
@@ -122,14 +122,17 @@ Open `cases/invoices.jsonl` and read the first few lines. Each case is everythin
 ```json title="One case, spread out so you can read it"
 {
   "id": "C-07",
-  "invoice": {"vendor_invoice_number": "BC-4471", "amount": 5480.00, "date": "2027-01-11",
-              "note": ""},
-  "vendor": {"name": "Basecamp Canvas Co.", "status": "active"},
-  "po": {"number": "PO-3312", "amount": 5200.00},
-  "received": {"amount": 5200.00},
-  "recent_invoices": []
+  "invoice": {"vendor_invoice_number": "BRW-4471", "date": "2027-01-11",
+              "description": "Merino wool yarn", "quantity": 400, "amount": 5480.0, "note": ""},
+  "vendor": {"name": "Bear River Wool", "status": "active"},
+  "recurring_contract_charge": false,
+  "po": {"number": "PO-3349", "quantity": 400, "amount": 5200.0},
+  "received": {"quantity": 400},
+  "recent_invoices_from_vendor": []
 }
 ```
+
+`po` and `received` are `null` when there's no purchase order or no receiving record. `recent_invoices_from_vendor` lists that vendor's other invoices from the last couple of months.
 
 Now let the model try three of them:
 
@@ -210,7 +213,7 @@ Fix any labels you changed your mind about before you go on. From here on, **don
 
 ### 3a. Read the call
 
-Open `triage.py`. It's about 40 lines. **Read it before you run anything else.**
+Open `triage.py`. The whole model call is the `triage()` function, about 15 lines. **Read it before you run anything else.**
 
 ```python title="triage.py (the part that matters)"
 class Triage(BaseModel):
@@ -223,11 +226,12 @@ class Triage(BaseModel):
 response = client.chat(
     model=config.MODEL,
     messages=[
-        {"role": "system", "content": SYSTEM_PROMPT},      # (1)!
-        {"role": "user", "content": json.dumps(case)},     # (2)!
+        {"role": "system", "content": SYSTEM_PROMPT},             # (1)!
+        {"role": "user", "content": json.dumps(case, indent=2)},  # (2)!
     ],
-    format=Triage.model_json_schema(),                     # (3)!
+    format=Triage.model_json_schema(),                            # (3)!
     options={"temperature": config.TEMPERATURE, "num_ctx": config.NUM_CTX},
+    think=think,
 )
 result = Triage.model_validate_json(response.message.content)  # (4)!
 ```
@@ -253,14 +257,17 @@ result = Triage.model_validate_json(response.message.content)  # (4)!
 uv run score.py --note "baseline"
 ```
 
-This runs all 20 of your cases, compares each result to your label, prints the misses, and adds a row to `runs.csv`.
+This runs all 20 of your cases, compares each result to your label, and adds a row to `runs.csv`. It takes a minute or two.
 
 ```text title="What the output looks like"
-C-07  expected hold/over_tolerance   got pay/ok            MISS
-C-12  expected hold/duplicate        got hold/duplicate    ok
+C-06  expected pay/ok                     got pay/vendor_inactive        MISS (reason)
+C-07  expected hold/over_tolerance        got pay/vendor_inactive        MISS
+C-26  expected hold/not_received          got hold/not_received          ok
 ...
-decision 12/20 (60%)   decision+reason 9/20 (45%)   38 s   21,400 tokens in   1,150 out
+decision 9/20 (45%)   decision+reason 2/20 (10%)   115 s   5,024 tokens in   1,448 out
 ```
+
+`MISS (reason)` means the decision was right and the reason code was wrong.
 
 !!! question "Answer in `observations.md`"
 
@@ -298,13 +305,23 @@ Make at least four changes. Here are some to try, roughly in the order professio
     uv run score.py --facts --note "computed the variance in Python"
     ```
 
-    This adds a few values that Python computes to each case before the model sees it: the amount over the PO, the tolerance, and whether a PO is required. Open `triage.py` and find where that happens.
+    This adds a `computed_facts` section to each case before the model sees it: whether a PO is required, the amount over the PO, the allowed variance, and whether the invoice is over it. Open `triage.py` and read `add_facts()`.
+
+    The model won't use the new values unless your prompt tells it to. Run it once as is, then change your prompt to refer to `computed_facts` and run it again.
 
 ??? example "4. Give it an order to check things in"
 
     When two rules apply, which wins? Tell the model the order to check in and to stop at the first problem.
 
 ??? example "5. Let it think"
+
+    Thinking is slow, so try it on a few cases the model keeps missing before you run all 20:
+
+    ```bash
+    uv run triage.py C-07 C-19 --think
+    ```
+
+    If each case comes back in a few seconds, run the full set. On a laptop without a fast GPU this can take ten minutes or more, so start it and work on your answers while it runs.
 
     ```bash
     uv run score.py --think --note "thinking on"
@@ -320,7 +337,7 @@ Make at least four changes. Here are some to try, roughly in the order professio
 
     Everything the model reads is the prompt: your instructions, the policy, the examples, and the case itself. Changing the wording of an instruction is the weakest tool you have. The stronger ones change *what information is in the window*: adding the rule the model lacked, showing it a solved case, or handing it a number so that it doesn't have to compute one.
 
-    Experiment 3 is the most important one in this lab. Models are unreliable at arithmetic and code is perfect at it, so do the arithmetic in code and let the model do the reading and judging.
+    You're also choosing how the work is divided. Code is perfect at arithmetic and at comparing two numbers. A model is useful for reading a free-text note or judging whether two invoice numbers are "the same". Experiments 3 and 5 are two different answers to the same weakness: hand the model the result, or give it room to work the result out. Measure both. Don't assume either one helps.
 
 ### 4b. The cases you haven't seen
 
@@ -330,13 +347,13 @@ You've now adjusted your prompt many times against the same 20 cases. Find out w
 uv run score.py --holdout --note "holdout"
 ```
 
-This scores your current prompt on 20 cases you've never looked at, labelled by the instructor.
+This scores your current prompt on 20 cases you've never looked at, labelled by the instructor. Add `--facts` or `--think` if your best run used them. Each holdout case triggers at most one rule, so there's no argument about which reason wins.
 
 !!! question "Answer in `observations.md`"
 
     9. Paste your `runs.csv`. Which single change helped most? Did you expect that one?
     10. Find a change that fixed at least one case and broke at least one other. What happened? How would you have noticed without the test set?
-    11. What did `--facts` do to your score? What does that suggest about dividing work between code and a model?
+    11. What did `--facts` do to your score, before and after you changed the prompt to use it? If you tried `--think`, what did it do to the score, the time and the output tokens? Which would you use for 5,000 invoices a month?
     12. When you ran the same prompt twice, did the score change? By how much? How big does an improvement need to be before you believe it?
     13. How did your holdout score compare with your own test set's score? Give one reason they might differ. (You've seen this idea in IS 455.)
 
@@ -431,11 +448,11 @@ Pushing is submitting: your last push before the deadline counts. Push as often 
 
 ??? failure "`ValidationError` when a case runs"
 
-    The model returned something that doesn't match the schema. It's rare with `format=` set, but it happens with very small models or a context window that's too small. `score.py` counts it as a miss and keeps going. If you see many, check that `NUM_CTX` is at least `8192`.
+    The model returned something that doesn't match the schema. It's rare with `format=` set, but it happens with very small models or a context window that's too small. `score.py` prints `INVALID REPLY`, counts it as a miss and keeps going. If you see many, check that `NUM_CTX` is at least `8192`.
 
-??? failure "A scoring run takes more than two minutes"
+??? failure "A scoring run takes more than three minutes"
 
-    Close other apps. Turn off `--think` if you left it on. The first case is slow while the model loads.
+    Close other apps. Turn off `--think` if you left it on; thinking makes a run five to ten times longer. The first case is slow while the model loads.
 
 ??? failure "Your prompt got long and the score dropped"
 
@@ -443,7 +460,7 @@ Pushing is submitting: your last push before the deadline counts. Push as often 
 
 ??? failure "ChatGPT's reply won't score"
 
-    `chatgpt_answers.json` must contain only the JSON list, with no sentence before or after it and no code-fence lines. If ChatGPT skipped cases, ask it for the ones that are missing.
+    `chatgpt_answers.json` must contain only the JSON list, with no sentence before or after it. A case ChatGPT skipped shows as `NO ANSWER`; ask it for the ones that are missing.
 
 ??? failure "Ollama isn't running, or the model isn't found"
 
