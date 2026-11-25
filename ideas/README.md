@@ -7,7 +7,6 @@ One file per idea. When an idea becomes a lab, draft it in `docs/labs/` and dele
 | Idea | Status |
 |---|---|
 | [Thinking: what enables it, what it enables](thinking.md) | Idea |
-| [Lab 1 — Score, don't vibe](lab1-score-dont-vibe.md) | Outline |
 | [Lab 2 — A coworker in your terminal](lab2-coworker-in-your-terminal.md) | Outline |
 | [Lab 3 — Ship a feature properly](lab3-ship-a-feature-properly.md) | Outline |
 | [Lab 4 — Package it and give it hands](lab4-package-it-and-give-it-hands.md) | Outline |

@@ -9,6 +9,9 @@ nav = [
   { "Weeks 1–2" = [
     { "Lab 0 — Your first agent" = "labs/lab0.md" },
   ] },
+  { "Week 3" = [
+    { "Lab 1 — Score, don't vibe" = "labs/lab1.md" },
+  ] },
 ]
 
 [project.theme]

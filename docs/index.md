@@ -20,10 +20,12 @@ Each lab gives you the short version of every step first. If you know what to do
 
     [:octicons-arrow-right-24: Start Lab 0](labs/lab0.md)
 
--   :material-lock-outline:{ .lg .middle } **Week 3 · Lab 1 — Score, don't vibe**
+-   :material-clipboard-check-outline:{ .lg .middle } **Week 3 · Lab 1 — Score, don't vibe**
 
     ---
 
-    Write a test set for invoice triage first, then improve a prompt against it and report the score. *Coming soon.*
+    Write a test set for invoice triage first, then improve a prompt against it and report the score. *Draft.*
+
+    [:octicons-arrow-right-24: Read the draft](labs/lab1.md)
 
 </div>
