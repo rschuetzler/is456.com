@@ -6,7 +6,7 @@ icon: material/clipboard-check-outline
 
 !!! warning "Draft"
 
-    This lab is still being reviewed. The starter repo isn't on GitHub yet, and steps may change.
+    This lab is still being reviewed and steps may change. The [starter repo](https://github.com/BYU-IS-456/lab1) is up, but your ClassMoji copy of it is not assigned yet.
 
 In Lab 0 you judged the agent by reading its answers and deciding whether they looked right. That works for six questions. It doesn't work when a prompt has to handle thousands of invoices, or when you change the prompt and need to know whether you made it better or worse. By the end of this lab you will have:
 
